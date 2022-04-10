@@ -9,12 +9,12 @@ export class MainComponent implements OnInit,AfterViewInit {
 
   constructor() { }
 
-  loaderStatus: string = 'block';
+  loaderStatus: boolean = true;
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.loaderStatus = 'none',5000)
+    setTimeout(() => this.loaderStatus = false,5000)
   }
 
 }

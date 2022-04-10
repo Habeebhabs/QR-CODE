@@ -12,4 +12,4 @@
         <button type="button" class="text-light">Get Started</button>
     </div>
 </div>
-<app-global-loader [style.display]="loaderStatus" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;"></app-global-loader>
+<app-global-loader *ngIf="loaderStatus" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;"></app-global-loader>
