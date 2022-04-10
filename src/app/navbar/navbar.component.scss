@@ -1,0 +1,33 @@
+.container-fluid{
+    font-family: 'Rubik Moonrocks';
+}
+.icon{
+    position: relative;
+}
+.icon::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.8px;
+    height: 3px;
+    width: 34px;
+    animation: slide 2s linear infinite;
+    background-color: #3399ff;
+}
+@keyframes slide {
+    0%{
+        top: 0;
+    }
+    30%{
+        top: 30%;
+    }
+    60%{
+        top: 60%;
+    }
+    70%{
+        top: 55%;
+    }
+    100%{
+        top: 87%;
+    }
+}

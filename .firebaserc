@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "qrcode-4c943": {
+      "hosting": {
+        "qr-code": [
+          "qrcode-4c943"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "qrcode-4c943"
+  }
+}
