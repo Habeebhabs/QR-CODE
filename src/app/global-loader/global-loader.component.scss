@@ -1,0 +1,16 @@
+.icon {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    background: #22303c;
+}
+svg {
+    width: 150px;
+    animation: rotate 3s linear infinite forwards;
+    animation-delay: 1s;
+}
+@keyframes rotate {
+    60%,100%{
+        transform: rotate(90deg);
+    }
+}
