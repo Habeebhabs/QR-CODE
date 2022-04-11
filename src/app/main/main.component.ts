@@ -10,6 +10,7 @@ export class MainComponent implements OnInit,AfterViewInit {
   constructor() { }
 
   loaderStatus: boolean = true;
+  btnLoader: boolean = false;
   ngOnInit(): void {
   }
 
