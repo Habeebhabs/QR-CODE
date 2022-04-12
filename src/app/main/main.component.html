@@ -23,7 +23,7 @@
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-light">
-            <div class="d-flex justify-content-between modal-top">
+            <div class="modal-top">
                 <h5 class="modal-title" id="formModalLabel">Sign In</h5>
                 <svg data-bs-dismiss="modal" xmlns="http://www.w3.org/2000/svg" class="close-icon" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
@@ -34,20 +34,21 @@
             <div class="modal-body row">
                 <div class="input-wrapper">
                     <label for="emailOrUsername">Username or Email</label><br>
-                    <input type="text" class="col-12 text-light fs-4 rounded" name="emailOrUsername">
+                    <input type="text" class="col-12 text-light fs-5 rounded" name="emailOrUsername">
                     <span class="text-danger text-left">something</span>
                 </div>
                 <div class="input-wrapper">
                     <label for="password">Password</label><br>
-                    <input type="password" class="col-12 text-light fs-4 rounded" name="password">
+                    <input type="password" class="col-12 text-light fs-5 rounded" name="password">
+                    <!-- viewpassword need to be added -->
                     <span class="text-danger">something</span>
                 </div>
             </div>
-            <div style="display: flex;flex-direction:column;justify-content: center;">
+            <div class="sign-btn-wrapper">
                 <button type="button" class="col-11 sign text-light rounded">Sign In</button>
                 <button type="button" class="sign col-11 text-light rounded" #check>Sign Up</button>
             </div>
         </div>
     </div>
 </div>
-<app-global-loader *ngIf="loaderStatus" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;"></app-global-loader>
+<!-- <app-global-loader *ngIf="loaderStatus" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;"></app-global-loader> -->
