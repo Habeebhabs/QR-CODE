@@ -46,9 +46,51 @@
             </div>
             <div class="sign-btn-wrapper">
                 <button type="button" class="col-11 sign text-light rounded">Sign In</button>
+                <button type="button" class="sign col-11 text-light rounded" #check data-bs-toggle="modal" data-bs-target="#formModalTwo">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div #modal class="modal fade" id="formModalTwo" data-bs-backdrop="static" tabindex="-1" aria-labelledby="formModalTwoLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-light">
+            <div class="modal-top modal-header">
+                <h5 class="modal-title" id="formModalTwoLabel">Sign In</h5>
+                <svg data-bs-dismiss="modal" xmlns="http://www.w3.org/2000/svg" class="close-icon" viewBox="0 0 20 20"
+                    fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="modal-body row">
+                <div class="input-wrapper">
+                    <label for="username">Username</label><br>
+                    <input type="text" class="col-12 text-light fs-5 rounded" name="username">
+                    <span class="text-danger text-left">something</span>
+                </div>
+                <div class="input-wrapper">
+                    <label for="email">Email</label><br>
+                    <input type="text" class="col-12 text-light fs-5 rounded" name="email">
+                    <span class="text-danger text-left">something</span>
+                </div>
+                <div class="input-wrapper">
+                    <label for="password">Password</label><br>
+                    <input type="password" class="col-12 text-light fs-5 rounded" name="password">
+                    <!-- viewpassword need to be added -->
+                    <span class="text-danger">something</span>
+                </div>
+            </div>
+            <div class="sign-btn-wrapper">
+                <button type="button" class="col-11 sign text-light rounded" data-bs-toggle="modal" data-bs-target="#formModal">Sign In</button>
                 <button type="button" class="sign col-11 text-light rounded" #check>Sign Up</button>
             </div>
         </div>
     </div>
 </div>
-<!-- <app-global-loader *ngIf="loaderStatus" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;"></app-global-loader> -->
+
+
+<app-global-loader *ngIf="loaderStatus" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;">
+</app-global-loader>

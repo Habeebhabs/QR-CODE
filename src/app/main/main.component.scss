@@ -51,7 +51,7 @@ svg{
     width: 65vw;
     height: 4rem;
     background: #3399ff;
-    border: none;
+    border: none !important;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     font-family: 'poppins','inter';
@@ -64,8 +64,11 @@ input{
     outline: none;
     padding: 0 0.8rem;
 }
-.input-wrapper:first-child{
-    margin-bottom: 1rem;
+.input-wrapper{
+    margin-bottom: 0.7rem;
+}
+.input-wrapper:last-child{
+    margin-bottom: 0;
 }
 .modal-top{
     margin: 10px 18px 0 18px ;
