@@ -65,32 +65,37 @@
                         clip-rule="evenodd" />
                 </svg>
             </div>
-            <div class="modal-body row">
+            <form [formGroup]="signUpForm" class="modal-body row">
                 <div class="input-wrapper">
                     <label for="username">Username</label><br>
-                    <input type="text" class="col-12 text-light fs-5 rounded" name="username">
-                    <span class="text-danger text-left">something</span>
+                    <input type="text" class="col-12 text-light fs-5 rounded" name="username" formControlName="userName">
+                    <span *ngIf="signUpForm.controls['userName'].hasError('required') && signUpForm.controls['userName'].touched" class="text-danger text-left">something</span>
+                    <span class="text-danger text-left" *ngIf="userNameErrorCode">Username already exists</span>
                 </div>
                 <div class="input-wrapper">
                     <label for="email">Email</label><br>
-                    <input type="text" class="col-12 text-light fs-5 rounded" name="email">
-                    <span class="text-danger text-left">something</span>
+                    <input type="text" class="col-12 text-light fs-5 rounded" name="email" formControlName="email">
+                    <span *ngIf="signUpForm.controls['email'].hasError('required') && signUpForm.controls['email'].touched" class="text-danger text-left">something</span>
+                    <span class="text-danger text-left" *ngIf="emailErrorCode">Email already exists</span>
                 </div>
                 <div class="input-wrapper">
                     <label for="password">Password</label><br>
-                    <input type="password" class="col-12 text-light fs-5 rounded" name="password">
+                    <input type="password" class="col-12 text-light fs-5 rounded" name="password" formControlName="password">
                     <!-- viewpassword need to be added -->
-                    <span class="text-danger">something</span>
+                    <span *ngIf="signUpForm.controls['password'].hasError('required') && signUpForm.controls['password'].touched" class="text-danger">something</span>
                 </div>
-            </div>
+            </form>
             <div class="sign-btn-wrapper">
                 <button type="button" class="col-11 sign text-light rounded" data-bs-toggle="modal" data-bs-target="#formModal">Sign In</button>
-                <button type="button" class="sign col-11 text-light rounded" #check>Sign Up</button>
+                <button type="button" class="sign col-11 text-light rounded" #check (click)="registerUserWithAuth()">Sign Up</button>
             </div>
         </div>
     </div>
 </div>
 
 
-<app-global-loader *ngIf="loaderStatus" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;">
-</app-global-loader>
+<!-- <app-global-loader *ngIf="loaderStatus" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;">
+</app-global-loader> -->
+
+<button (click)="registerUserWithAuth()">register</button>
+<button (click)="signIn()">sign in</button>
