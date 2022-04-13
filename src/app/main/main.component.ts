@@ -14,17 +14,37 @@ export class MainComponent implements OnInit,AfterViewInit {
 
   loaderStatus: boolean = true;
   btnLoader: boolean = false;
+  lastTypedUserName :any;
+  lastTypedEmail: any;
+  signUpEmailErrorCode :any;
+  signUpUserNameErrorCode: any;
+  signUpPasswordErrorCode: any;
+  signInEmailErrorCode : any;
+  signInPasswordErrorCode : any;
+  signInErrorCode : any;
+  authErrorCodes : any;
+  signInBtnLoader : boolean = false;
+  signUpBtnLoader : boolean = false;
+  @ViewChild('signUpPasswordField') signUpPasswordField !: ElementRef;
+  @ViewChild('signInPasswordField') signInPasswordField !: ElementRef;
+  @ViewChild('check') btn !: ElementRef;
+  signUpForm = new FormGroup({
+    userName : new FormControl('',Validators.required),
+    email : new FormControl('',Validators.required),
+    password : new FormControl('',[Validators.required,Validators.minLength(8)])
+  })
+  
+  signInForm = new FormGroup({
+    email: new FormControl('',Validators.required),
+    password: new FormControl('',Validators.required)
+  })
+
   ngOnInit(): void {
     console.log(AuthErrorCodes);
-    this.signUpForm.valueChanges.subscribe(value => {
-      if(value['userName'] == this.lastTypedUserName) this.userNameErrorCode = true;
-      else this.userNameErrorCode = false;
-      this.emailErrorCode = false;
-
-    })
+    this.authErrorCodes = AuthErrorCodes;
   }
 
-  lastTypedUserName :any;
+
   ngAfterViewInit(): void {
     setTimeout(() => this.loaderStatus = false,5000)
 // document.getElementById('abc').setAttribute('data-dismiss','modal');
@@ -32,55 +52,44 @@ export class MainComponent implements OnInit,AfterViewInit {
     //   this.btn.nativeElement.setAttribute('data-bs-dismiss','modal');
     //   this.btn.nativeElement.click();
     // }, 6000);
+    
   }
 
-  @ViewChild('check') btn !: ElementRef;
-  userName = new FormControl('',Validators.required);
+
+  changePasswordFieldType(type: string,field:any){
+    if(field == 'signUpPasswordField') this.signUpPasswordField.nativeElement.type = type;
+      //when clicking the icon, input lose focus. Retrieve focus by this => this.signUpPasswordField.nativeElement.focus();
+    else this.signInPasswordField.nativeElement.type = type;
+    //when clicking the icon, input lose focus. Retrieve focus by this => this.signInPasswordField.nativeElement.focus();
+  }
   
-  signUpForm = new FormGroup({
-    userName : new FormControl('',Validators.required),
-    email : new FormControl('',Validators.required),
-    password : new FormControl('',Validators.required)
-  })
 
-  emailErrorCode :any;
-  userNameErrorCode: any;
-
-  userNameStatus :boolean = true;
+  signInUserWithAuth(){
+    if(this.signInForm.valid) this.firebaseSignIn();
+    else this.signInForm.markAllAsTouched();
+  }
+    
   registerUserWithAuth(){
-    // const { userName,email,password } = this.mainForm.value;
-    this.getFirebaseData(this.signUpForm.controls['userName'].value);
-    // setTimeout(() => {
-    //   if(this.userNameStatus){
-    //     createUserWithEmailAndPassword(this.auth,email,password)
-    //     .then((res) => {
-    //       this.addData(res.user.uid);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err.code)
-    //       if(err.code == AuthErrorCodes.EMAIL_EXISTS) console.log('got it');
-    //     })
-    //   } 
-    //   else{
-    //     console.log('username already exists',this.userNameStatus);
-    //   }
-    // },500)
+    if(this.signUpForm.valid) this.getFirebaseData(this.signUpForm.controls['userName'].value);
+    else this.signUpForm.markAllAsTouched();
   }
 
-  signIn(){
-    // const auth = getAuth();
-    signInWithEmailAndPassword(this.auth,'habeeb@gmail.com','23r34t34')
+  firebaseSignIn(){
+    this.signInBtnLoader = true;
+    const { email,password } = this.signInForm.value
+    signInWithEmailAndPassword(this.auth,email,password)
     .then((res) => {
-      console.log(res.user.uid)
-      // onAuthStateChanged(auth,(user) => {
-      //   if(user){
-      //     console.log(user.uid);
-      //   }
-      //   else{
-      //     console.log('no user')
-      //   }
-      // })
-      console.log(AuthErrorCodes)
+      console.log(res.user.uid);
+      this.signInBtnLoader = false;
+      alert('sign in success')
+    })
+    .catch((err) => {
+      console.log(err.code)
+      if(err.code == AuthErrorCodes.INVALID_EMAIL) this.signInErrorCode = AuthErrorCodes.INVALID_EMAIL;
+      if(err.code == AuthErrorCodes.USER_DELETED) this.signInErrorCode = AuthErrorCodes.USER_DELETED;
+      if(err.code == AuthErrorCodes.INVALID_PASSWORD) this.signInErrorCode = AuthErrorCodes.INVALID_PASSWORD;
+      this.signInBtnLoader = false;
+      alert('sign in fail')
     })
   }
 
@@ -91,19 +100,24 @@ export class MainComponent implements OnInit,AfterViewInit {
       userId: userId,
       userName: this.signUpForm.controls['userName'].value
     }
-    const dbinstance = collection(this.firestore,'users');
-    addDoc(dbinstance,value)
+    const dbInstance = collection(this.firestore,'users');
+    addDoc(dbInstance,value)
     .then((response) => {
       console.log('data registered');
+      this.signUpBtnLoader = false;
+      alert('data registered');
     })
     .catch((err) => {
-      console.log(err.code)
+      console.log(err.code);
+      this.signUpBtnLoader = false;
+      alert('data not registered');
     })
   }
 
   getFirebaseData(userName:any){
-    const dbinstance = collection(this.firestore,'users');
-    getDocs(dbinstance)
+    this.signUpBtnLoader = true;
+    const dbInstance = collection(this.firestore,'users');
+    getDocs(dbInstance)
     .then((response) => {
         const data:any[] = [...response.docs.map((item:any) => {
           return { ...item.data(), id:item.id }
@@ -111,34 +125,40 @@ export class MainComponent implements OnInit,AfterViewInit {
         const isAvailable:any[] = data.filter(item => {
           return item.userName.toLowerCase() == userName.toLowerCase();
         })
-        if(isAvailable.length == 0){
-          this.userNameErrorCode = false;
+        if(!isAvailable.length){
+          this.signUpUserNameErrorCode = false;
           const { userName,email,password } = this.signUpForm.value;
           createUserWithEmailAndPassword(this.auth,email,password)
           .then((res) => {
             this.addData(res.user.uid);
-            this.emailErrorCode = false;
+            this.signUpEmailErrorCode = false;
           })
           .catch((err) => {
-            this.lastTypedUserName = this.signUpForm.controls['userName'].value;
-            console.log(err.code)
-            if(err.code == AuthErrorCodes.EMAIL_EXISTS) console.log('got it');
-            this.emailErrorCode = true;
+            if(err.code == AuthErrorCodes.EMAIL_EXISTS){
+              this.lastTypedEmail = this.signUpForm.controls['email'].value;
+              this.signUpEmailErrorCode = true;
+              this.signUpForm.controls['email'].valueChanges.subscribe(value => {
+                if(value == this.lastTypedEmail) this.signUpEmailErrorCode = true;
+                else this.signUpEmailErrorCode = false;
+              })
+            }
+            this.signUpBtnLoader = false;
           })
         }
         else{
-          console.log('username already exists');
-          this.userNameErrorCode = true;
+          this.signUpUserNameErrorCode = true;
           this.lastTypedUserName = this.signUpForm.controls['userName'].value;
-          this.signUpForm.valueChanges.subscribe(value => {
-            if(value['userName'] == this.lastTypedUserName) this.userNameErrorCode = true;
-            else this.userNameErrorCode = false;
+          this.signUpForm.controls['userName'].valueChanges.subscribe(value => {
+            if(value == this.lastTypedUserName) this.signUpUserNameErrorCode = true;
+            else this.signUpUserNameErrorCode = false;
           })
-          
+          this.signUpBtnLoader = false;
         };
     })
     .catch((err) => {
-      console.log(err.code)
+      console.log(err.code);
+      console.log('Network Disconnected')
+      this.signInBtnLoader = false;
     })
   }
 }
