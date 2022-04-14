@@ -1,3 +1,41 @@
 .container-fluid{
     font-family: 'Rubik Moonrocks';
+    color: #3399ff;
+}
+h1{
+    color: #3399ff;
+    padding-top: 7px;
+}
+.head-class-one{
+    letter-spacing: 10px;
+}
+.head-class-two{
+    letter-spacing: 3px;
+}
+.avatar{
+    width: 2.3rem;
+    height: 2.3rem;
+    background-color: rgb(233, 176, 19);
+    border-radius: 50%;
+    animation: avatar 0.5s ease-in-out;
+    font-family: 'poppins','inter';
+}
+@keyframes avatar {
+    from{
+        opacity: 0.5;
+    }
+    to{
+        opacity: 1;
+    }
+}
+svg{
+    color: #3399ff;
+}
+.icon-one{
+    width: 35px;
+    margin-right: 15px;
+}
+.icon-two{
+    width: 30px;
+    margin-right: 10px;
 }
