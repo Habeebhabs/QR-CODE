@@ -75,9 +75,13 @@ input{
     display: flex;
     justify-content: space-between;
 }
+h5{
+    margin-left: -15px;
+}
 .text-danger{
     padding-left: 7px;
-    animation: show 0.4s ease-in forwards;
+    animation: show 0.35s ease-in forwards;
+    font-size: 15px;
 }
 @keyframes show {
     0%{
@@ -90,6 +94,7 @@ input{
 .close-icon{
     width: 17px;
     cursor: pointer;
+    margin-right: -10px;
 }
 .sign-btn-wrapper{
     display: flex;

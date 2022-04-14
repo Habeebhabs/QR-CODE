@@ -25,7 +25,7 @@
         <div class="modal-content text-light">
             <div class="modal-top modal-header">
                 <h5 class="modal-title" id="formModalLabel">Sign In</h5>
-                <svg data-bs-dismiss="modal" xmlns="http://www.w3.org/2000/svg" class="close-icon" viewBox="0 0 20 20" fill="currentColor">
+                <svg data-bs-dismiss="modal" xmlns="http://www.w3.org/2000/svg" class="close-icon" viewBox="0 0 20 20" fill="currentColor" (click)="closeForm('signIn')">
                     <path fill-rule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                     clip-rule="evenodd" />
@@ -35,19 +35,18 @@
                 <div class="input-wrapper">
                     <label for="emailOrUsername">Email</label><br>
                     <input type="text" class="col-12 text-light fs-5 rounded" name="emailOrUsername" formControlName="email">
-                    <span *ngIf="signInForm.controls['email'].hasError('required') && signInForm.controls['email'].touched" class="text-danger text-left">Email is required</span>
-                    <span *ngIf="signInEmailErrorCode" class="text-danger">Incorrect email</span>
-                    <span *ngIf="signInErrorCode == authErrorCodes.INVALID_EMAIL" class="text-danger">Incorrect email</span>
-                    <span *ngIf="signInErrorCode == authErrorCodes.USER_DELETED" class="text-danger">User not found</span>
+                    <span *ngIf="signInForm.controls['email'].hasError('required') && signInForm.controls['email'].touched" class="text-danger">Email is required</span>
+                    <span *ngIf="signInErrorCode == authErrorCodes.INVALID_EMAIL && !signInForm.controls['email'].hasError('required')" class="text-danger">Incorrect email</span>
+                    <span *ngIf="signInErrorCode == authErrorCodes.USER_DELETED && !signInForm.controls['email'].hasError('required')" class="text-danger">User not found</span>
                 </div>
                 <div class="input-wrapper" style="position: relative;">
                     <label for="password">Password</label><br>
                     <input #signInPasswordField type="password" class="col-12 text-light fs-5 rounded" name="password" formControlName="password">
                     <!-- viewpassword need to be added -->
                     <span *ngIf="signInForm.controls['password'].hasError('required') && signInForm.controls['password'].touched"
-                        class="text-danger text-left">Password is required</span>
-                    <span *ngIf="signInErrorCode == authErrorCodes.INVALID_PASSWORD" class="text-danger">Incorrect password</span>
-                    <span *ngIf="signInErrorCode == authErrorCodes.USER_DELETED" class="text-danger">User not found</span>
+                        class="text-danger">Password is required</span>
+                    <span *ngIf="signInErrorCode == authErrorCodes.INVALID_PASSWORD && !signInForm.controls['password'].hasError('required')" class="text-danger">Incorrect password</span>
+                    <span *ngIf="signInErrorCode == authErrorCodes.USER_DELETED && !signInForm.controls['password'].hasError('required')" class="text-danger">User not found</span>
                     <svg (click)="changePasswordFieldType('text','signInPasswordField')" *ngIf="signInPasswordField.type == 'password'"
                         xmlns="http://www.w3.org/2000/svg" class="password-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         stroke-width="2">
@@ -82,9 +81,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-light">
             <div class="modal-top modal-header">
-                <h5 class="modal-title" id="formModalTwoLabel">Sign In</h5>
+                <h5 class="modal-title" id="formModalTwoLabel">Sign Up</h5>
                 <svg data-bs-dismiss="modal" xmlns="http://www.w3.org/2000/svg" class="close-icon" viewBox="0 0 20 20"
-                    fill="currentColor">
+                    fill="currentColor" (click)="closeForm('signUp')">
                     <path fill-rule="evenodd"
                         d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                         clip-rule="evenodd" />
@@ -94,14 +93,15 @@
                 <div class="input-wrapper">
                     <label for="username">Username</label><br>
                     <input type="text" class="col-12 text-light fs-5 rounded" name="username" formControlName="userName">
-                    <span *ngIf="signUpForm.controls['userName'].hasError('required') && signUpForm.controls['userName'].touched" class="text-danger text-left">Username required</span>
-                    <span class="text-danger text-left" *ngIf="signUpUserNameErrorCode">Username already exists</span>
+                    <span *ngIf="signUpForm.controls['userName'].hasError('required') && signUpForm.controls['userName'].touched" class="text-danger">Username required</span>
+                    <span class="text-danger" *ngIf="signUpUserNameErrorCode">Username already exists</span>
                 </div>
                 <div class="input-wrapper">
                     <label for="email">Email</label><br>
                     <input type="text" class="col-12 text-light fs-5 rounded" name="email" formControlName="email">
-                    <span *ngIf="signUpForm.controls['email'].hasError('required') && signUpForm.controls['email'].touched" class="text-danger text-left">Email required</span>
-                    <span class="text-danger text-left" *ngIf="signUpEmailErrorCode">Email already exists</span>
+                    <span *ngIf="signUpForm.controls['email'].hasError('required') && signUpForm.controls['email'].touched" class="text-danger">Email required</span>
+                    <span class="text-danger" *ngIf="signUpEmailErrorCode">Email already exists</span>
+                    <span class="text-danger" *ngIf="signUpEmailInvalid && !signUpForm.controls['email'].hasError('required')">Incorrect email</span>
                 </div>
                 <div class="input-wrapper" style="position: relative;">
                     <label for="password">Password</label><br>

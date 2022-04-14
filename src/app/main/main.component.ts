@@ -19,6 +19,7 @@ export class MainComponent implements OnInit,AfterViewInit {
   signUpEmailErrorCode :any;
   signUpUserNameErrorCode: any;
   signUpPasswordErrorCode: any;
+  signUpEmailInvalid : any;
   signInEmailErrorCode : any;
   signInPasswordErrorCode : any;
   signInErrorCode : any;
@@ -55,12 +56,21 @@ export class MainComponent implements OnInit,AfterViewInit {
     
   }
 
+  closeForm(form: string){
+    if(form == 'signIn') this.signInForm.reset();
+    else this.signUpForm.reset();
+  }
+
 
   changePasswordFieldType(type: string,field:any){
-    if(field == 'signUpPasswordField') this.signUpPasswordField.nativeElement.type = type;
-      //when clicking the icon, input lose focus. Retrieve focus by this => this.signUpPasswordField.nativeElement.focus();
-    else this.signInPasswordField.nativeElement.type = type;
-    //when clicking the icon, input lose focus. Retrieve focus by this => this.signInPasswordField.nativeElement.focus();
+    if(field == 'signUpPasswordField'){
+      this.signUpPasswordField.nativeElement.type = type;
+      this.signUpPasswordField.nativeElement.focus();
+    }
+    else{
+      this.signInPasswordField.nativeElement.type = type;
+      this.signInPasswordField.nativeElement.focus();
+    }
   }
   
 
@@ -81,7 +91,6 @@ export class MainComponent implements OnInit,AfterViewInit {
     .then((res) => {
       console.log(res.user.uid);
       this.signInBtnLoader = false;
-      alert('sign in success')
     })
     .catch((err) => {
       console.log(err.code)
@@ -89,7 +98,6 @@ export class MainComponent implements OnInit,AfterViewInit {
       if(err.code == AuthErrorCodes.USER_DELETED) this.signInErrorCode = AuthErrorCodes.USER_DELETED;
       if(err.code == AuthErrorCodes.INVALID_PASSWORD) this.signInErrorCode = AuthErrorCodes.INVALID_PASSWORD;
       this.signInBtnLoader = false;
-      alert('sign in fail')
     })
   }
 
@@ -105,12 +113,10 @@ export class MainComponent implements OnInit,AfterViewInit {
     .then((response) => {
       console.log('data registered');
       this.signUpBtnLoader = false;
-      alert('data registered');
     })
     .catch((err) => {
       console.log(err.code);
       this.signUpBtnLoader = false;
-      alert('data not registered');
     })
   }
 
@@ -132,8 +138,13 @@ export class MainComponent implements OnInit,AfterViewInit {
           .then((res) => {
             this.addData(res.user.uid);
             this.signUpEmailErrorCode = false;
+            this.signUpEmailInvalid = false;
           })
           .catch((err) => {
+            console.log(err.code)
+            if(err.code == AuthErrorCodes.INVALID_EMAIL){
+              this.signUpEmailInvalid = true;
+            }
             if(err.code == AuthErrorCodes.EMAIL_EXISTS){
               this.lastTypedEmail = this.signUpForm.controls['email'].value;
               this.signUpEmailErrorCode = true;
@@ -157,7 +168,6 @@ export class MainComponent implements OnInit,AfterViewInit {
     })
     .catch((err) => {
       console.log(err.code);
-      console.log('Network Disconnected')
       this.signInBtnLoader = false;
     })
   }
