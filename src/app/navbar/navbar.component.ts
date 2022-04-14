@@ -11,12 +11,14 @@ export class NavbarComponent implements OnInit,AfterViewInit {
 
   ngOnInit(): void {
   }
+  
+  something: boolean = false;
 
   ngAfterViewInit(): void {
     setTimeout(() => this.something = true,3000);
     setTimeout(() => this.something = false,6000)
   }
 
-  something: boolean = false;
+  
 
 }
