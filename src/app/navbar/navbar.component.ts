@@ -14,10 +14,10 @@ export class NavbarComponent implements OnInit,AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setInterval(() => {
-      this.isUserAvailable = true;
-      setTimeout(() => this.isUserAvailable = false,4000);
-    },6000)
+    // setInterval(() => {
+    //   this.isUserAvailable = true;
+    //   setTimeout(() => this.isUserAvailable = false,4000);
+    // },6000)
   }
 
 }

@@ -10,14 +10,18 @@ h2,h3{
     position: relative;
     margin-top: 1rem;
 }
+.icon > svg {
+    width: 12.5rem;
+}
 
 .icon::after {
     content: '';
     position: absolute;
     top: 0;
-    left: 30.5%;
+    left: 50%;
+    transform: translateX(-50%);
     height: 10px;
-    width: 135px;
+    width: 9rem;
     animation: slide 3s linear infinite;
     background-color: #fff;
 }
@@ -42,9 +46,6 @@ h2,h3{
     100% {
         top: 87%;
     }
-}
-svg{
-    width: 200px;
 }
 
 .get-started{
