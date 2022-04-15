@@ -9,16 +9,14 @@ export class NavbarComponent implements OnInit,AfterViewInit {
 
   constructor() { }
 
-  something: boolean = false;
+  isUserAvailable: boolean = false;
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    // setTimeout(() => this.something = true,3000);
-    // setTimeout(() => this.something = false,6000);
     setInterval(() => {
-      this.something = true;
-      setTimeout(() => this.something = false,4000);
+      this.isUserAvailable = true;
+      setTimeout(() => this.isUserAvailable = false,4000);
     },6000)
   }
 
