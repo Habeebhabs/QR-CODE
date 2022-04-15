@@ -6,7 +6,22 @@
         </svg>
         <h1 [class]="!isUserAvailable ? 'fs-1 head-one' : 'fs-2 head-two'">QRWORLD</h1>
     </div>
-    <div *ngIf="isUserAvailable" class="avatar d-flex justify-content-center align-items-center">
-        <span>HR</span>
+    <div (click)="showSignOutBtn()" *ngIf="isUserAvailable" class="avatar d-flex justify-content-center align-items-center">
+        <span>{{initial}}</span>
+    </div>
+</div>
+<div *ngIf="showSignOutBtnStatus" class="sign-out-wrapper" (click)="signOutUser()">
+    <span class="sign-out text-light rounded">
+        Sign Out
+    </span>
+</div>
+
+
+<div *ngIf="mainSpinner" class="main-spinner-wrapper">
+    <div class="main-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
 </div>

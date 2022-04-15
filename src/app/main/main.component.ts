@@ -3,6 +3,7 @@ import { Auth,createUserWithEmailAndPassword,signInWithEmailAndPassword,getAuth,
 import { addDoc,Firestore,collection } from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { doc, getDocs, updateDoc } from '@firebase/firestore';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -10,10 +11,10 @@ import { doc, getDocs, updateDoc } from '@firebase/firestore';
 })
 export class MainComponent implements OnInit,AfterViewInit {
 
-  constructor(public auth: Auth,public firestore: Firestore) { }
+  constructor(public auth: Auth,public firestore: Firestore,public router: Router) { }
 
+  mainSpinner : boolean = false;
   loaderStatus: boolean = true;
-  btnLoader: boolean = false;
   lastTypedUserName :any;
   lastTypedEmail: any;
   signUpEmailErrorCode :any;
@@ -26,9 +27,10 @@ export class MainComponent implements OnInit,AfterViewInit {
   authErrorCodes : any;
   signInBtnLoader : boolean = false;
   signUpBtnLoader : boolean = false;
+  isUserSignedIn : boolean = false;
   @ViewChild('signUpPasswordField') signUpPasswordField !: ElementRef;
   @ViewChild('signInPasswordField') signInPasswordField !: ElementRef;
-  @ViewChild('check') btn !: ElementRef;
+  @ViewChild('signInBtn') signInBtn !: ElementRef;
   signUpForm = new FormGroup({
     userName : new FormControl('',Validators.required),
     email : new FormControl('',Validators.required),
@@ -75,6 +77,10 @@ export class MainComponent implements OnInit,AfterViewInit {
   
 
   signInUserWithAuth(){
+    if(this.isUserSignedIn){
+      this.signInForm.reset();
+      return;
+    }
     if(this.signInForm.valid) this.firebaseSignIn();
     else this.signInForm.markAllAsTouched();
   }
@@ -90,7 +96,27 @@ export class MainComponent implements OnInit,AfterViewInit {
     signInWithEmailAndPassword(this.auth,email,password)
     .then((res) => {
       console.log(res.user.uid);
+      const dbInstance = collection(this.firestore,'users');
+      getDocs(dbInstance)
+      .then((response) => {
+        const data:any[] = [...response.docs.map((item:any) => {
+          return { ...item.data()}
+        })];
+        let current = '';
+        data.forEach((item) => {
+          if(item.userId == res.user.uid) current = item.userName;
+        })
+        if(current) localStorage.setItem('currentUser',current);
+      })
       this.signInBtnLoader = false;
+      this.isUserSignedIn = true;
+      this.signInBtn.nativeElement.setAttribute('data-bs-dismiss','modal');
+      this.signInBtn.nativeElement.click();
+      this.mainSpinner = true;
+      setTimeout(() => {
+        this.mainSpinner = false;
+        this.router.navigate(['qrcode'])
+      },3000)
     })
     .catch((err) => {
       console.log(err.code)
