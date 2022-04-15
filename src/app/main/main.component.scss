@@ -11,7 +11,7 @@ h2,h3{
     margin-top: 1rem;
 }
 .icon > svg {
-    width: 12.5rem;
+    width: 200px;
 }
 
 .icon::after {
@@ -21,7 +21,7 @@ h2,h3{
     left: 50%;
     transform: translateX(-50%);
     height: 10px;
-    width: 9rem;
+    width: 155px;
     animation: slide 3s linear infinite;
     background-color: #fff;
 }
