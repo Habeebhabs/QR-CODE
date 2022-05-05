@@ -12,6 +12,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { GlobalLoaderComponent } from './global-loader/global-loader.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { QrcodeComponent } from './qrcode/qrcode.component';
+import { SomethingComponent } from './something/something.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { QrcodeComponent } from './qrcode/qrcode.component';
     MainComponent,
     NavbarComponent,
     GlobalLoaderComponent,
-    QrcodeComponent
+    QrcodeComponent,
+    SomethingComponent
   ],
   imports: [
     BrowserModule,
